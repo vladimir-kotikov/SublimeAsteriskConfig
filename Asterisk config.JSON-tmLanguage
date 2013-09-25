@@ -58,7 +58,7 @@
 					"patterns": [
 						{
 							"name": "meta.internal.function",
-							"begin": "(NoOp|Answer|Dial|Hangup|Busy|MixMonitor|GotoIf|Goto|Set|Macro|Queue)\\(?",
+							"begin": "(NoOp|Answer|Dial|Hangup|Busy|MixMonitor|GotoIf|Goto|Set|Macro|Queue|Playback|Background|WaitExten|MusicOnHold|Ringing)\\(?",
 							"beginCaptures": {
 							    "1": { "name": "support.function" }
 							},
