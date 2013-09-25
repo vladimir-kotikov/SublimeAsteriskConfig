@@ -1,0 +1,115 @@
+// [PackageDev] target_format: plist, ext: tmLanguage
+{
+	"name": "Asterisk config",
+	"scopeName": "source.asterisk.config",
+	"fileTypes": ["conf"],
+	"uuid": "01514276-8d8f-49e6-a8f3-08642d7f8b33",
+	"foldingStartMarker": "\\[.*\\])(\\((!)?.*?\\))?",
+	"foldingStopMarker": "?=\\[",
+
+	"repository": {
+		"path_value": {
+			"name": "constant.other",
+			"match": "(/[\\w-]+)+(\\.[\\w-]+)?"
+		},
+		"net_address_value": {
+			"name": "constant.other",
+			"match": "(\\w+://)?((\\w+:)?\\w+@)?([\\w-]+\\.)+[a-zA-Z-]+(:\\d+)?"
+		},
+		"ip_netmask_value": {
+			"name": "constant.other",
+			"match": "\\b((?:\\d{1,3}\\.){3}\\d{1,3})(?:/((?:\\d{1,3}\\.){3}\\d{1,3}))?\\b"
+		},
+		"boolean_value": {
+			"name": "constant.numeric",
+			"match": "\\b(true|false|yes|no|all)\\b"
+		},
+		"comment": {
+			"name": "comment.line",
+			"match": "(;).*$\\n?",
+			"1": { "name": "punctuation.definition.comment" }
+		}
+	},
+
+	"patterns": [
+		{ "include": "#comment" },
+		{
+			"name": "meta.section",
+			"begin": "(\\[(macro-)?.*\\])(?:\\((!)?\\s*,?(?:\\s*(\\w+)\\s*,?)*\\))?",
+			"beginCaptures": {
+			    "1": { "name": "storage.type" },
+			    "2": { "name": "storage.modifier" },
+			    "3": { "name": "storage.modifier" },
+			    "4": { "name": "entity.other-inherited-class" }
+			},
+			"end": "(?=\\[)",
+			"patterns": [
+				{ "include": "#comment" },
+				{
+					"name": "meta.extension",
+					"begin": "^\\s*(exten)\\s*(=>)\\s*(a|h|i|o|s|t|T|e|failed|fax|talk|receiver|(?:_[0-9XZN!\\.]+)),(\\d+|n)(\\(.*?\\))?,",
+					"beginCaptures": {
+						"1": { "name": "keyword.control" },
+						"2": { "name": "keyword.operator" },
+						"3": { "name": "support.constant" },
+						"4": { "name": "support.constant" },
+						"5": { "name": "support.class" }
+					},
+					"patterns": [
+						{
+							"name": "meta.internal.function",
+							"begin": "(NoOp|Answer|Dial|Hangup|Busy|MixMonitor|GotoIf|Goto|Set|Macro|Queue)\\(?",
+							"beginCaptures": {
+							    "1": { "name": "support.function" }
+							},
+							"end": "\\)?\\s*$",
+							"patterns": [
+								{
+									"name": "support.variable",
+									"match": "\\$\\{.*\\}"
+								},
+								{
+									"name": "support.other",
+									"match": "\\?\\w+:\\w+"
+								}
+							]
+						}
+					],
+					"end": "$"
+				},
+				{
+					"name": "meta.expression",
+					"begin": "^\\s*([a-zA-Z_-]+)\\s*(=)(?!>)",
+					"beginCaptures": {
+					    "1": { "name": "variable.parameter" },
+					    "2": { "name": "keyword.operator" }
+					},
+					"end": "$",
+			    	"patterns": [
+			    		{ "include": "#path_value" },
+			    		{ "include": "#ip_netmask_value" },
+			    		{ "include": "#net_address_value" },
+			    		{ "include": "#boolean_value" },
+			    		{ "include": "#comment" }
+			    	]
+				},
+				{
+					"name": "meta.command",
+					"begin": "^\\s*(include|[a-zA-Z_-]+)\\s*(=>)",
+					"beginCaptures": {
+					    "1": { "name": "keyword.control" },
+					    "2": { "name": "keyword.operator" }
+					},
+					"end": "$",
+			    	"patterns": [
+			    		{ "include": "#path_value" },
+			    		{ "include": "#ip_netmask_value" },
+			    		{ "include": "#net_address_value" },
+			    		{ "include": "#boolean_value" },
+			    		{ "include": "#comment" }
+			    	]
+				}
+			]
+		}
+	]
+}
