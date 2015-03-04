@@ -3,7 +3,7 @@ SublimeAsteriskConfig
 
 Asterisk *.conf syntax highlight and snippets for SublimeText
 
-=Installation=
+## Installation ##
 Sublime Text needs to find these in ~/.config/sublime-text-2/Packages/. So, navigate to that directory, and then checkout this repo, and restart Sublime Text.
 
 1. cd ~/.config/sublime-text-2/Packages/
